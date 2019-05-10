@@ -1,1 +1,20 @@
+#up1, #up2 {
+  width: 0;
+  height: 0;
+  top:500px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  padding-top: 50px;
+  border-bottom: 5px solid black;
+}
 
+#down1, #down2 {
+  width: 0;
+  height: 0;
+  top: auto;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+
+  border-top: 5px solid #f00;
+  top:500px;
+}
