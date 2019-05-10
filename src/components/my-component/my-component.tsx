@@ -15,23 +15,18 @@ export class MyComponent {
   /**
    * The middle name
    */
-  // @Prop({ mutable: true}) parse_json: any = JSON.parse(this.str_json);
-
-  /**
-   * The last name
-   */
-  @Prop() last: string;
+  @Prop({ mutable: true}) parse_json;
 
 
   render() {
     // let parse_json = JSON.parse(this.str_json)
     // var out = this.newMethod(parse_json);
+    this.parse_json = JSON.parse(this.str_json)
     return ([
-      <div id="1"> Resultats : Il doit y avoir ce texte plus la string en Json</div>,
-      <div id="2"> Blabla </div>]
-      //  </div>
+      // <div id="1"> Resultats : Il doit y avoir ce texte plus la string en Json</div>,
+      // <div id="2"> Blabla </div>]
       // <div> {out} </div>
-      // <div> {this.parse_json[0].sequence} </div>
+      <div> {this.parse_json[0].sequence} </div>
     );
   }
 

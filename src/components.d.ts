@@ -14,9 +14,9 @@ export namespace Components {
 
   interface MyComponent {
     /**
-    * The middle name The last name
+    * The middle name
     */
-    'last': string;
+    'parse_json': any;
     /**
     * The first name
     */
@@ -24,9 +24,9 @@ export namespace Components {
   }
   interface MyComponentAttributes extends StencilHTMLAttributes {
     /**
-    * The middle name The last name
+    * The middle name
     */
-    'last'?: string;
+    'parse_json'?: any;
     /**
     * The first name
     */
