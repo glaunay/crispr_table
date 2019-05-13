@@ -4,68 +4,46 @@ import { Component, Prop } from '@stencil/core';
 @Component({
   tag: 'my-component',
   styleUrl: 'my-component.css',
-  shadow: true
+  shadow: false
 })
+
 export class MyComponent {
-  /**
-   * The first name
-   */
+  shadowData:any;
+  private rowSelected:number = 0;
+  // private cellSelected:number = 0;
+
   @Prop() str_json: string;
 
-  /**
-   * The middle name
-   */
-  @Prop({ mutable: true}) parse_json;
+  onItemClick(event: Event) {
+    const row = event.currentTarget as HTMLTableRowElement;
 
+    console.log("Click row")
+    console.log(`Current Selected : ${this.rowSelected}`);
 
-  render() {
-    // let parse_json = JSON.parse(this.str_json)
-    // var out = this.newMethod(parse_json);
-    this.parse_json = JSON.parse(this.str_json)
-    return ([
-      // <div id="1"> Resultats : Il doit y avoir ce texte plus la string en Json</div>,
-      // <div id="2"> Blabla </div>]
-      // <div> {out} </div>
-      <div> {this.parse_json[0].sequence} </div>
-    );
+    row.style.backgroundColor = (row.style.backgroundColor == 'rgb(204, 204, 204)') ? 'white' : '#ccc';
+    let tab = document.getElementById("toto") as HTMLTableElement;
+    tab.rows[this.rowSelected].style.backgroundColor = 'white';
+    // tab.rows[this.rowSelected].cells[this.cellSelected].style.backgroundColor = 'white';
+    this.rowSelected = row.rowIndex;
+    console.log(tab.rows[this.rowSelected].cells)
+    // this.cellSelected = event.currentTarget.cellIndex;
+    // console.log(tab.rows[this.currentSelected])
   }
 
-    private newMethod(obj) {
-        var out = '';
-        let i = 0;
-        for (i = 0; i < obj.length; i++) {
-            let line_seq = 0;
-            let seq = obj[i].sequence;
-            let number_genomes = obj[i].occurences.length;
-            let j = 0;
-            for (j = 0; j < number_genomes; j++) {
-                let line_genome = 0;
-                let org = obj[i].occurences[j].org;
-                let org_split = org.split(' ');
-                // let ref_org=org_split.pop()
-                let number_ref = obj[i].occurences[j].all_ref.length;
-                let k = 0;
-                for (k = 0; k < number_ref; k++) {
-                    let ref = obj[i].occurences[j].all_ref[k].ref;
-                    let number_coords = obj[i].occurences[j].all_ref[k].coords.length;
-                    line_genome += number_coords;
-                    line_seq += number_coords;
-                    let l = 0;
-                    for (l = 0; l < number_coords; l++) {
-                        let coord = obj[i].occurences[j].all_ref[k].coords[l];
-                        let print_coord = '<td>' + coord + '</td></tr>';
-                        out = print_coord + out;
-                    }
-                    let print_ref = '<td rowspan="' + number_coords + '">' + ref + '</td>';
-                    out = print_ref + out;
-                }
-                let print_org = '<td rowspan="' + line_genome + '">' + org_split.join(' ') + '</td>';
-                out = print_org + out;
-            }
-            let print_seq = '<td rowspan="' + line_seq + '" valign="top">' + seq + '</td>';
-            out = print_seq + out;
-        }
-        var header = '<tr class = "w3-light-grey"> <th> sgRNA sequence </th> <th> Organism(s) </th> <th colspan=2> Coordinates </th> </tr>';
-        out = header + out;
+  drawRow(res_json:any): JSX.Element[] {
+    return ([<td >{res_json.sequence}</td>,<td>{res_json.occurences.length}</td>]);
+  }
+
+  render() {
+    console.log("rendr called")
+    console.log(this.rowSelected);
+    let parse_json = JSON.parse(this.str_json);
+    let rows = [];
+    for (var i=0; i<parse_json.length; i++){
+      rows.push(this.drawRow(parse_json[i]));
     }
+    return ([
+       <table id="toto"> <th> Sequences </th> <th> Occurences </th>{rows.map((d) => <tr onClick={this.onItemClick.bind(this)}> {d} </tr>)} </table>
+    ]);
+  }
 }

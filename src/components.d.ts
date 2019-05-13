@@ -13,23 +13,9 @@ import '@stencil/core';
 export namespace Components {
 
   interface MyComponent {
-    /**
-    * The middle name
-    */
-    'parse_json': any;
-    /**
-    * The first name
-    */
     'str_json': string;
   }
   interface MyComponentAttributes extends StencilHTMLAttributes {
-    /**
-    * The middle name
-    */
-    'parse_json'?: any;
-    /**
-    * The first name
-    */
     'str_json'?: string;
   }
 }
