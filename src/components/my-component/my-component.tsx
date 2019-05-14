@@ -17,9 +17,9 @@ export class MyComponent {
     this.onItemClick = this.onItemClick.bind(this);
   }
 
-  @Listen('window:scroll')
-  handleScroll(ev) {
-    console.log('the body was scrolled', ev);
+  @Listen('jenesaispas')
+  bbb(ev:CustomEvent) {
+    console.log('the body was scrolled', ev.detail);
   }
 
   @Event() jenesaispas: EventEmitter;
@@ -36,6 +36,7 @@ export class MyComponent {
     if (this.cellSelected != -1) tab.rows[this.rowSelected].cells[this.cellSelected].style.backgroundColor = 'white';
     this.rowSelected = cell.parentElement.rowIndex;
     this.cellSelected = cell.cellIndex;
+    this.jenesaispas.emit((cell.cellIndex as unknown as string));
   }
 
   drawRow(res_json:any): JSX.Element[] {
