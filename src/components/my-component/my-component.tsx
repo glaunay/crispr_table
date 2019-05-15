@@ -8,6 +8,7 @@ import { Component, Prop, Listen, EventEmitter, Event } from '@stencil/core';
 })
 
 export class MyComponent {
+// *************************** PROPERTY & CONSTRUCTOR ***************************
   private originTable:string;
   private rowSelected:number = -1;
   private cellSelected:number = -1;
@@ -19,8 +20,12 @@ export class MyComponent {
     this.sortTable = this.sortTable.bind(this);
     this.regexSearch = this.regexSearch.bind(this);
     this.showOcc = this.showOcc.bind(this);
+    this.sortOrgOcc = this.sortOrgOcc.bind(this);
+    this.showOrg = this.showOrg.bind(this);
   }
 
+
+// *************************** LISTEN & EMIT ***************************
   @Listen('jenesaispas')
   bbb(ev:CustomEvent) {
     console.log('the body was scrolled', ev.detail);
@@ -32,9 +37,20 @@ export class MyComponent {
       this.jenesaispas.emit(todo);
   }
 
+
+// *************************** CLICK ***************************
   showOcc(event: Event) {
-    let next = (event.currentTarget as HTMLTableCellElement).children[0] as HTMLSpanElement;
+    // let next = (event.currentTarget as HTMLTableCellElement).children[0] as HTMLSpanElement;
+    let next = (event.currentTarget as HTMLTableCellElement).nextElementSibling as HTMLTableCellElement;
     next.style.display = (next.style.display == 'none') ? 'block' : 'none';
+  }
+
+  showOrg(event: Event) {
+    let currentIndex = ((event.currentTarget as HTMLTableCellElement).parentElement as HTMLTableRowElement).rowIndex
+    Array.from(document.getElementsByClassName("occurences"), e => {
+      let cell = (e as HTMLTableCellElement);
+      if ((cell.parentElement as HTMLTableRowElement).rowIndex == currentIndex) cell.style.display = (cell.style.display == 'none') ? 'block' : 'none';
+    })
   }
 
   onItemClick(event: Event) {
@@ -54,12 +70,8 @@ export class MyComponent {
     this.jenesaispas.emit((cell.parentElement.innerText as string));
   }
 
-  drawRow(res_json:any): JSX.Element[] {
-    return ([<td onClick={this.onItemClick}>{res_json.sequence}</td>,
-             <td onClick={this.showOcc}>{res_json.occurences.length} <span class="occurences"> test </span></td>
-           ]);
-  }
 
+// *************************** SORT & SEARCH ***************************
   sortTable(event: Event) {
     var rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     let table = document.getElementById("toto") as HTMLTableElement;
@@ -142,6 +154,33 @@ export class MyComponent {
     this.str_json = JSON.stringify(tmp);
   }
 
+// *************************** DISPLAY ***************************
+  sortOrgOcc(res_json:any) {
+  let name:string;
+  let nbMax:number=0;
+  res_json.occurences.forEach(a => {
+    if (a.all_ref.length > nbMax){
+      nbMax = a.all_ref.length;
+      name = a.org;
+    }
+  })
+  return [name, nbMax];
+}
+
+  drawRow(res_json:any): JSX.Element[] {
+    const [name, nbOcc] = this.sortOrgOcc(res_json)
+    return ([<td onClick={this.onItemClick}>{res_json.sequence}</td>,
+             <td onClick={this.showOrg}>{name}</td>,
+                <td class="occurences"> bla </td>,
+             <td onClick={this.showOcc}  >{nbOcc} </td>,
+
+                <td class="occurences"> test </td>,
+                // <ul class="occurences">
+                //   <li> </li>
+                // </ul>
+           ]);
+  }
+
   render() {
     console.log("rendr called")
     // Keep the original data
@@ -153,15 +192,18 @@ export class MyComponent {
     for (var i=0; i<parse_json.length; i++){
       rows.push(this.drawRow(parse_json[i]));
     }
+
     return ([
         <div class="tooltip">
           <input type="text" id="regexString" onkeyup={this.regexSearch} placeholder="Search for sgRNA.."/>
           <span class="tooltiptext">Use Regex</span>
         </div>,
+
       <table id="toto">
-        <th data-col="0" onClick={this.sortTable}> Sequences </th> <th data-col="1" onClick={this.sortTable}> Occurences </th>
+        <th data-col="0" onClick={this.sortTable}> Sequences </th> <th data-col="1" onClick={this.sortTable}> Organism </th><th data-col="2" onClick={this.sortTable}> Occurences </th>
         {rows.map((d) => <tr> {d} </tr>)}
       </table>
+
     ]);
   }
 }
