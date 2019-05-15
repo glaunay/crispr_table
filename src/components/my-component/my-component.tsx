@@ -48,10 +48,13 @@ export class MyComponent {
   showOcc(event: Event) {
     let currentCell = event.currentTarget as HTMLTableCellElement
     let currentSequence = (currentCell.previousSibling as HTMLTableCellElement).innerText;
+    // For each span with as tag the sequence
     Array.from(document.getElementsByClassName(currentSequence), e => {
       let cell = (e as HTMLTableCellElement);
+      // Display or not span
       cell.style.display = (cell.style.display == 'none') ? 'block' : 'none';
     })
+    // Put in bold the major organism and its occurence
     currentCell.style.fontWeight= (currentCell.style.fontWeight == 'normal') ? 'bold' : 'normal';
     let next = currentCell.nextSibling as HTMLTableCellElement;
     next.style.fontWeight= (next.style.fontWeight == 'normal') ? 'bold' : 'normal';
@@ -59,7 +62,7 @@ export class MyComponent {
 
   onItemClick(event: Event) {
     const cell = event.currentTarget as HTMLTableCellElement;
-    let tab = document.getElementById("toto") as HTMLTableElement;
+    let tab = document.getElementById("resultTab") as HTMLTableElement;
     let currentRow  = (cell.parentElement as HTMLTableRowElement).rowIndex as number;
     let currentCell = cell.cellIndex as number;
 
@@ -78,7 +81,7 @@ export class MyComponent {
 // *************************** SORT & SEARCH ***************************
   sortTable(event: Event) {
     var rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    let table = document.getElementById("toto") as HTMLTableElement;
+    let table = document.getElementById("resultTab") as HTMLTableElement;
     let cell = event.currentTarget as HTMLTableHeaderCellElement;
     let n = cell.dataset["col"] as unknown as number;
 
@@ -160,6 +163,7 @@ export class MyComponent {
 
 // *************************** DISPLAY ***************************
   sortOrgOcc(res_json:any) {
+  // Find the organism with the max occurence
   let name:string;
   let nbMax:number=0;
   res_json.occurences.forEach(a => {
@@ -173,14 +177,15 @@ export class MyComponent {
 
   drawRow(res_json:any): JSX.Element[] {
     const [name, nbOcc] = this.sortOrgOcc(res_json)
-    let test = "occurences".concat(' ', res_json.sequence);
-    console.log(test)
-    let orgName=[], occ=[];
+    let classTag = "occurences".concat(' ', res_json.sequence);
+    // Empty span to create a space between major organism and all organism
+    let orgName=[<span class={classTag}><br/></span>], occ=[<span class={classTag}><br/></span>];
+    // Create the list of all organism and the occurence of sgRNA which are hidden
     for (var i in res_json.occurences) {
-      orgName.push(<span class={test}> {res_json.occurences[i].org} </span>)
-      occ.push(<span class={test}> {res_json.occurences[i].all_ref.length}</span>)
+      orgName.push(<span class={classTag}> {res_json.occurences[i].org} </span>)
+      occ.push(<span class={classTag}> {res_json.occurences[i].all_ref.length}</span>)
     }
-    console.log(occ)
+    // Return the table
     return ([<td onClick={this.onItemClick}>{res_json.sequence}</td>,
              <td onClick={this.showOcc} class='orgName'>{name}
                 {orgName.map((o) => o)}
@@ -209,7 +214,7 @@ export class MyComponent {
           <span class="tooltiptext">Use Regex</span>
         </div>,
 
-      <table id="toto">
+      <table id="resultTab">
         <th data-col="0" onClick={this.sortTable}> Sequences </th> <th data-col="1" onClick={this.sortTable}> Organism </th><th data-col="2" onClick={this.sortTable}> Occurences </th>
         {rows.map((d) => <tr> {d} </tr>)}
       </table>
