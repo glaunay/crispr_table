@@ -46,11 +46,15 @@ export class MyComponent {
   // }
 
   showOcc(event: Event) {
-    let currentSequence = ((event.currentTarget as HTMLTableCellElement).previousSibling as HTMLTableCellElement).innerText;
+    let currentCell = event.currentTarget as HTMLTableCellElement
+    let currentSequence = (currentCell.previousSibling as HTMLTableCellElement).innerText;
     Array.from(document.getElementsByClassName(currentSequence), e => {
       let cell = (e as HTMLTableCellElement);
       cell.style.display = (cell.style.display == 'none') ? 'block' : 'none';
     })
+    currentCell.style.fontWeight= (currentCell.style.fontWeight == 'normal') ? 'bold' : 'normal';
+    let next = currentCell.nextSibling as HTMLTableCellElement;
+    next.style.fontWeight= (next.style.fontWeight == 'normal') ? 'bold' : 'normal';
   }
 
   onItemClick(event: Event) {
@@ -171,12 +175,18 @@ export class MyComponent {
     const [name, nbOcc] = this.sortOrgOcc(res_json)
     let test = "occurences".concat(' ', res_json.sequence);
     console.log(test)
+    let orgName=[], occ=[];
+    for (var i in res_json.occurences) {
+      orgName.push(<span class={test}> {res_json.occurences[i].org} </span>)
+      occ.push(<span class={test}> {res_json.occurences[i].all_ref.length}</span>)
+    }
+    console.log(occ)
     return ([<td onClick={this.onItemClick}>{res_json.sequence}</td>,
              <td onClick={this.showOcc} class='orgName'>{name}
-                <span class={test}> Test avec span  </span>
-              </td>,
+                {orgName.map((o) => o)}
+             </td>,
              <td>{nbOcc}
-                <span class={test}> Test avec span  </span>
+                {occ.map((o) => o)}
               </td>,
            ]);
   }

@@ -37,4 +37,5 @@ th, .orgName{
 
 .occurences {
   display: none;
+  font-weight: normal  !important;
 }
