@@ -16,6 +16,7 @@ export namespace Components {
     'str_json': string;
   }
   interface MyComponentAttributes extends StencilHTMLAttributes {
+    'onJenesaispas'?: (event: CustomEvent) => void;
     'str_json'?: string;
   }
 }

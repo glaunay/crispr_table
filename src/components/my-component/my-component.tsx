@@ -32,7 +32,7 @@ export class MyComponent {
   onItemClick(event: Event) {
     const cell = event.currentTarget as HTMLTableCellElement;
     let tab = document.getElementById("toto") as HTMLTableElement;
-    let currentRow  = cell.parentElement.rowIndex as number;
+    let currentRow  = (cell.parentElement as HTMLTableRowElement).rowIndex as number;
     let currentCell = cell.cellIndex as number;
 
     if (this.rowSelected == currentRow && this.cellSelected == currentCell){
@@ -40,7 +40,7 @@ export class MyComponent {
     } else {
       cell.style.color = 'blue';
       if (this.cellSelected != -1) tab.rows[this.rowSelected].cells[this.cellSelected].style.color = 'black';
-      this.rowSelected = cell.parentElement.rowIndex;
+      this.rowSelected = (cell.parentElement as HTMLTableRowElement).rowIndex;
       this.cellSelected = cell.cellIndex;
     }
     this.jenesaispas.emit((cell.parentElement.innerText as string));
@@ -49,6 +49,7 @@ export class MyComponent {
   drawRow(res_json:any): JSX.Element[] {
     return ([<td onClick={this.onItemClick}>{res_json.sequence}</td>,<td onClick={this.onItemClick}>{res_json.occurences.length}</td>]);
   }
+
   sortTable(event: Event) {
     var rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     let table = document.getElementById("toto") as HTMLTableElement;
@@ -92,9 +93,8 @@ export class MyComponent {
       if (shouldSwitch) {
         /* If a switch has been marked, make the switch
         and mark that a switch has been done: */
-        console.log(`I : ${i}     Row : ${this.rowSelected}`)
         if (i == (this.rowSelected as number)){
-          this.rowSelected = i-1;
+          this.rowSelected = i+1;
         } else if (i+1 == (this.rowSelected as number)){
           this.rowSelected = i
         }
