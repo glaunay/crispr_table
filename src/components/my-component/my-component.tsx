@@ -8,6 +8,7 @@ import { Component, Prop, Listen, EventEmitter, Event } from '@stencil/core';
 })
 
 export class MyComponent {
+  private originTable:string;
   private rowSelected:number = -1;
   private cellSelected:number = -1;
 
@@ -116,14 +117,20 @@ export class MyComponent {
 
   render() {
     console.log("rendr called")
-    console.log(this.rowSelected);
+    // Keep the original data
+    if (this.originTable == 'undefined') this.originTable = this.str_json;
     let parse_json = JSON.parse(this.str_json);
     let rows = [];
+    // Create row for table
     for (var i=0; i<parse_json.length; i++){
       rows.push(this.drawRow(parse_json[i]));
     }
     return ([
-       <table id="toto"> <th data-col="0" onClick={this.sortTable}> Sequences </th> <th data-col="1" onClick={this.sortTable}> Occurences </th>{rows.map((d) => <tr> {d} </tr>)} </table>
+      <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for sgRNA.."/>,
+      <table id="toto">
+        <th data-col="0" onClick={this.sortTable}> Sequences </th> <th data-col="1" onClick={this.sortTable}> Occurences </th>
+        {rows.map((d) => <tr> {d} </tr>)}
+      </table>
     ]);
   }
 }
