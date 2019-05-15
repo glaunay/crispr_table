@@ -12,11 +12,13 @@ export class MyComponent {
   private rowSelected:number = -1;
   private cellSelected:number = -1;
 
-  @Prop() str_json: string;
+  @Prop({mutable: true}) str_json: string;
 
   constructor() {
-    this.onItemClick = this.onItemClick.bind(this);
+    // this.onItemClick = this.onItemClick.bind(this);
     this.sortTable = this.sortTable.bind(this);
+    this.regexSearch = this.regexSearch.bind(this);
+    this.showOcc = this.showOcc.bind(this);
   }
 
   @Listen('jenesaispas')
@@ -30,7 +32,14 @@ export class MyComponent {
       this.jenesaispas.emit(todo);
   }
 
+  showOcc(event: Event) {
+    console.log("BLA")
+    // let next = event.currentTarget.nextElementSibling;
+    // console.log(next);
+  }
+
   onItemClick(event: Event) {
+    console.log("TTT")
     const cell = event.currentTarget as HTMLTableCellElement;
     let tab = document.getElementById("toto") as HTMLTableElement;
     let currentRow  = (cell.parentElement as HTMLTableRowElement).rowIndex as number;
@@ -44,11 +53,11 @@ export class MyComponent {
       this.rowSelected = (cell.parentElement as HTMLTableRowElement).rowIndex;
       this.cellSelected = cell.cellIndex;
     }
-    this.jenesaispas.emit((cell.parentElement.innerText as string));
+    // this.jenesaispas.emit((cell.parentElement.innerText as string));
   }
 
   drawRow(res_json:any): JSX.Element[] {
-    return ([<td onClick={this.onItemClick}>{res_json.sequence}</td>,<td onClick={this.onItemClick}>{res_json.occurences.length}</td>]);
+    return ([<td onClick={this.showOcc}>{res_json.sequence}</td>,<td onClick={this.showOcc}>{res_json.occurences.length} <span style="display:none"> res_json.occurences <span> </td>]);
   }
 
   sortTable(event: Event) {
@@ -115,10 +124,30 @@ export class MyComponent {
     }
   }
 
+  regexSearch() {
+    let l = 0;
+    let tmp = [], sequences=[];
+    let search = (document.getElementById("regexString") as HTMLInputElement).value;
+    let parse_json = JSON.parse(this.originTable);
+
+    for (var k in parse_json) sequences.push(parse_json[k].sequence);
+    sequences = sequences.filter(a => RegExp(search).test(a));
+
+    for (var j in parse_json) {
+      if (sequences.includes(parse_json[j].sequence)){
+        tmp[l] = parse_json[j];
+        l++;
+      }
+    }
+    this.str_json = JSON.stringify(tmp);
+  }
+
   render() {
     console.log("rendr called")
+    console.log("Je fonctionne")
     // Keep the original data
-    if (this.originTable == 'undefined') this.originTable = this.str_json;
+    if (this.originTable == undefined) this.originTable = this.str_json;
+
     let parse_json = JSON.parse(this.str_json);
     let rows = [];
     // Create row for table
@@ -126,7 +155,10 @@ export class MyComponent {
       rows.push(this.drawRow(parse_json[i]));
     }
     return ([
-      <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for sgRNA.."/>,
+        <div class="tooltip">
+          <input type="text" id="regexString" onkeyup={this.regexSearch} placeholder="Search for sgRNA.."/>
+          <span class="tooltiptext">Use Regex</span>
+        </div>,
       <table id="toto">
         <th data-col="0" onClick={this.sortTable}> Sequences </th> <th data-col="1" onClick={this.sortTable}> Occurences </th>
         {rows.map((d) => <tr> {d} </tr>)}
