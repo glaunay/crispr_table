@@ -2,7 +2,7 @@ tr:nth-child(even) {
   background-color: #f2f2f2
 }
 
-th {
+th, .orgName{
   cursor: pointer;
 }
 
@@ -36,6 +36,5 @@ th {
 }
 
 .occurences {
-  display:none;
-  color:"red";
+  display: none;
 }

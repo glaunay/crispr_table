@@ -21,7 +21,7 @@ export class MyComponent {
     this.regexSearch = this.regexSearch.bind(this);
     this.showOcc = this.showOcc.bind(this);
     this.sortOrgOcc = this.sortOrgOcc.bind(this);
-    this.showOrg = this.showOrg.bind(this);
+    // this.showOrg = this.showOrg.bind(this);
   }
 
 
@@ -39,17 +39,17 @@ export class MyComponent {
 
 
 // *************************** CLICK ***************************
-  showOcc(event: Event) {
-    // let next = (event.currentTarget as HTMLTableCellElement).children[0] as HTMLSpanElement;
-    let next = (event.currentTarget as HTMLTableCellElement).nextElementSibling as HTMLTableCellElement;
-    next.style.display = (next.style.display == 'none') ? 'block' : 'none';
-  }
+  // showOcc(event: Event) {
+  //   // let next = (event.currentTarget as HTMLTableCellElement).children[0] as HTMLSpanElement;
+  //   let next = (event.currentTarget as HTMLTableCellElement).nextElementSibling as HTMLTableCellElement;
+  //   next.style.display = (next.style.display == 'none') ? 'block' : 'none';
+  // }
 
-  showOrg(event: Event) {
-    let currentIndex = ((event.currentTarget as HTMLTableCellElement).parentElement as HTMLTableRowElement).rowIndex
-    Array.from(document.getElementsByClassName("occurences"), e => {
+  showOcc(event: Event) {
+    let currentSequence = ((event.currentTarget as HTMLTableCellElement).previousSibling as HTMLTableCellElement).innerText;
+    Array.from(document.getElementsByClassName(currentSequence), e => {
       let cell = (e as HTMLTableCellElement);
-      if ((cell.parentElement as HTMLTableRowElement).rowIndex == currentIndex) cell.style.display = (cell.style.display == 'none') ? 'block' : 'none';
+      cell.style.display = (cell.style.display == 'none') ? 'block' : 'none';
     })
   }
 
@@ -169,15 +169,15 @@ export class MyComponent {
 
   drawRow(res_json:any): JSX.Element[] {
     const [name, nbOcc] = this.sortOrgOcc(res_json)
+    let test = "occurences".concat(' ', res_json.sequence);
+    console.log(test)
     return ([<td onClick={this.onItemClick}>{res_json.sequence}</td>,
-             <td onClick={this.showOrg}>{name}</td>,
-                <td class="occurences"> bla </td>,
-             <td onClick={this.showOcc}  >{nbOcc} </td>,
-
-                <td class="occurences"> test </td>,
-                // <ul class="occurences">
-                //   <li> </li>
-                // </ul>
+             <td onClick={this.showOcc} class='orgName'>{name}
+                <span class={test}> Test avec span  </span>
+              </td>,
+             <td>{nbOcc}
+                <span class={test}> Test avec span  </span>
+              </td>,
            ]);
   }
 
