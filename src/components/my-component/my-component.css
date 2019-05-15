@@ -34,3 +34,8 @@ th {
   border-style: solid;
   border-color: transparent black transparent transparent;
 }
+
+.occurences {
+  display:none;
+  color:"red";
+}

@@ -15,7 +15,7 @@ export class MyComponent {
   @Prop({mutable: true}) str_json: string;
 
   constructor() {
-    // this.onItemClick = this.onItemClick.bind(this);
+    this.onItemClick = this.onItemClick.bind(this);
     this.sortTable = this.sortTable.bind(this);
     this.regexSearch = this.regexSearch.bind(this);
     this.showOcc = this.showOcc.bind(this);
@@ -33,13 +33,11 @@ export class MyComponent {
   }
 
   showOcc(event: Event) {
-    console.log("BLA")
-    // let next = event.currentTarget.nextElementSibling;
-    // console.log(next);
+    let next = (event.currentTarget as HTMLTableCellElement).children[0] as HTMLSpanElement;
+    next.style.display = (next.style.display == 'none') ? 'block' : 'none';
   }
 
   onItemClick(event: Event) {
-    console.log("TTT")
     const cell = event.currentTarget as HTMLTableCellElement;
     let tab = document.getElementById("toto") as HTMLTableElement;
     let currentRow  = (cell.parentElement as HTMLTableRowElement).rowIndex as number;
@@ -53,11 +51,13 @@ export class MyComponent {
       this.rowSelected = (cell.parentElement as HTMLTableRowElement).rowIndex;
       this.cellSelected = cell.cellIndex;
     }
-    // this.jenesaispas.emit((cell.parentElement.innerText as string));
+    this.jenesaispas.emit((cell.parentElement.innerText as string));
   }
 
   drawRow(res_json:any): JSX.Element[] {
-    return ([<td onClick={this.showOcc}>{res_json.sequence}</td>,<td onClick={this.showOcc}>{res_json.occurences.length} <span style="display:none"> res_json.occurences <span> </td>]);
+    return ([<td onClick={this.onItemClick}>{res_json.sequence}</td>,
+             <td onClick={this.showOcc}>{res_json.occurences.length} <span class="occurences"> test </span></td>
+           ]);
   }
 
   sortTable(event: Event) {
@@ -144,7 +144,6 @@ export class MyComponent {
 
   render() {
     console.log("rendr called")
-    console.log("Je fonctionne")
     // Keep the original data
     if (this.originTable == undefined) this.originTable = this.str_json;
 
