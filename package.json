@@ -17,10 +17,13 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "frappe-datatable": "^1.13.0"
+    "frappe-datatable": "^1.13.0",
+    "fs": "0.0.1-security"
   },
   "devDependencies": {
-    "@stencil/core": "~0.16.2"
+    "@stencil/core": "~0.16.2",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0"
   },
   "license": "MIT"
 }
