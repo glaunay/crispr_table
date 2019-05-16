@@ -227,7 +227,7 @@ export class MyComponent {
     // Create the list of all organism and the occurence of sgRNA which are hidden
     for (var i in res_json.occurences) {
       orgName.push(<span class={classTag}> {res_json.occurences[i].org} </span>)
-      occ.push(<span class={classTag} onClick={this.showCoord}> {res_json.occurences[i].all_ref.length}</span>)
+      occ.push(<span class={classTag} onClick={this.onItemClick}> {res_json.occurences[i].all_ref.length}</span>)
     }
     // Return the table
     return ([<td onClick={this.onItemClick}>{res_json.sequence}</td>,
