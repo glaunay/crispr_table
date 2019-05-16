@@ -269,9 +269,7 @@ export class MyComponent {
             blablabla
           </div>
 
-        </div>,
-        <img src="./assets/design-header.jpg" alt="Test image"/>
-
+        </div>
     ]);
   }
 }
