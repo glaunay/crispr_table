@@ -1,4 +1,4 @@
-#regexString {
+my-component #regexString {
   width: 50%;
   font-size: 16px;
   padding: 12px 20px 12px 40px;
@@ -8,7 +8,7 @@
 
 
 /* For bubble message */
-.tooltip .tooltiptext {
+my-component .tooltip .tooltiptext {
   visibility: hidden;
   width: 120px;
   background-color: black;
@@ -22,11 +22,11 @@
   z-index: 1;
 }
 
-.tooltip:hover .tooltiptext {
+my-component .tooltip:hover .tooltiptext {
   visibility: visible;
 }
 
-.tooltip .tooltiptext::after {
+my-component .tooltip .tooltiptext::after {
   content: " ";
   position: absolute;
   top: 50%;
@@ -39,27 +39,27 @@
 
 
 /*  Zebra table*/
-tr:nth-child(even) {
+my-component tr:nth-child(even) {
   background-color: #f2f2f2
 }
 
-table {
+my-component table {
   border-spacing: 5px;
 }
 
-td {
+my-component td {
   padding: 10px;
   font-size: 1.2em;
   text-align: center;
 }
 
-th, .orgName{
+my-component th, my-component .orgName{
   cursor: pointer;
 }
 
 
 /*  Div hidden */
-.occurences {
+my-component .occurences {
   display: none;
   font-weight: normal  !important;
   cursor: default;
@@ -67,12 +67,12 @@ th, .orgName{
 }
 
 
-#box {
+my-component #box {
   display: grid;
   grid-template-columns: 70% 30%;;
 }
 
-.coordBox{
+my-component .coordBox{
     padding-left: 15px;
     display: none;
 
