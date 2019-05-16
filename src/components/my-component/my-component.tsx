@@ -1,4 +1,5 @@
-import { Component, Prop, Listen, EventEmitter, Event } from '@stencil/core';
+import { Component, Prop, Listen, EventEmitter, Event, Element } from '@stencil/core';
+// import fs from 'fs';
 
 
 @Component({
@@ -12,16 +13,21 @@ export class MyComponent {
   private originTable:string;
   private rowSelected:number = -1;
   private cellSelected:number = -1;
+  // private nameOrgBox: string;
+  // private seqBox: string;
 
+  @Prop({mutable: true}) file_name: string;
   @Prop({mutable: true}) str_json: string;
 
+
+  @Element() private element: HTMLElement;
   constructor() {
     this.onItemClick = this.onItemClick.bind(this);
     this.sortTable = this.sortTable.bind(this);
     this.regexSearch = this.regexSearch.bind(this);
     this.showOcc = this.showOcc.bind(this);
     this.sortOrgOcc = this.sortOrgOcc.bind(this);
-    // this.showOrg = this.showOrg.bind(this);
+    // this.showCoord = this.showCoord.bind(this);
   }
 
 
@@ -45,11 +51,49 @@ export class MyComponent {
   //   next.style.display = (next.style.display == 'none') ? 'block' : 'none';
   // }
 
+  // showCoord(event: Event) {
+  //     let coordBox = this.element.querySelectorAll("#coordBox")[0] as HTMLDivElement;
+  //     let occCell = event.currentTarget as HTMLTableCellElement;
+  //     let parse_json = JSON.parse(this.str_json);
+  //     let orgName = (occCell.parentElement.previousElementSibling as HTMLTableCellElement).innerText.split("\n")[0];
+  //     let sequence = occCell.classList[1];
+  //
+  //     if (this.nameOrgBox != orgName || this.seqBox != sequence) {
+  //       coordBox.style.display = 'block';
+  //
+  //       let allCoord = parse_json.find(a => {
+  //         if (a.sequence == sequence) {
+  //             let coords = a.occurences.find(b => {
+  //               if (b.org == orgName) {
+  //                 let coord = [];
+  //                 for (var i in b.all_ref) {
+  //                   let listCoord = (b.all_ref[i].coords.map((o) => <dd> {o} </dd>));
+  //                   console.log(b.all_ref[i].coords.map(o => <dd> {o} </dd>));
+  //                   coord.push(<dl> <dt>{b.all_ref[i].ref}</dt> {listCoord} </dl>);
+  //                 }
+  //                 console.log(coord);
+  //                 return coord;
+  //               }
+  //             });
+  //             console.log(coords);
+  //             return coords;
+  //         }
+  //       });
+  //       console.log(allCoord);
+  //     coordBox.innerText = allCoord;
+  //     this.nameOrgBox = orgName;
+  //     this.seqBox = sequence;
+  //   } else {
+  //     coordBox.style.display = 'none';
+  //
+  //   }
+  // }
+
   showOcc(event: Event) {
     let currentCell = event.currentTarget as HTMLTableCellElement
     let currentSequence = (currentCell.previousSibling as HTMLTableCellElement).innerText;
     // For each span with as tag the sequence
-    Array.from(document.getElementsByClassName(currentSequence), e => {
+    Array.from(this.element.getElementsByClassName(currentSequence), e => {
       let cell = (e as HTMLTableCellElement);
       // Display or not span
       cell.style.display = (cell.style.display == 'none') ? 'block' : 'none';
@@ -62,7 +106,7 @@ export class MyComponent {
 
   onItemClick(event: Event) {
     const cell = event.currentTarget as HTMLTableCellElement;
-    let tab = document.getElementById("resultTab") as HTMLTableElement;
+    let tab = this.element.querySelectorAll("#resultTab")[0] as HTMLTableElement;
     let currentRow  = (cell.parentElement as HTMLTableRowElement).rowIndex as number;
     let currentCell = cell.cellIndex as number;
 
@@ -81,7 +125,7 @@ export class MyComponent {
 // *************************** SORT & SEARCH ***************************
   sortTable(event: Event) {
     var rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    let table = document.getElementById("resultTab") as HTMLTableElement;
+    let table = this.element.querySelectorAll("#resultTab")[0] as HTMLTableElement;
     let cell = event.currentTarget as HTMLTableHeaderCellElement;
     let n = cell.dataset["col"] as unknown as number;
 
@@ -146,7 +190,7 @@ export class MyComponent {
   regexSearch() {
     let l = 0;
     let tmp = [], sequences=[];
-    let search = (document.getElementById("regexString") as HTMLInputElement).value;
+    let search = (this.element.querySelectorAll("#regexString")[0]  as HTMLInputElement).value;
     let parse_json = JSON.parse(this.originTable);
 
     for (var k in parse_json) sequences.push(parse_json[k].sequence);
@@ -183,7 +227,7 @@ export class MyComponent {
     // Create the list of all organism and the occurence of sgRNA which are hidden
     for (var i in res_json.occurences) {
       orgName.push(<span class={classTag}> {res_json.occurences[i].org} </span>)
-      occ.push(<span class={classTag}> {res_json.occurences[i].all_ref.length}</span>)
+      occ.push(<span class={classTag} onClick={this.showCoord}> {res_json.occurences[i].all_ref.length}</span>)
     }
     // Return the table
     return ([<td onClick={this.onItemClick}>{res_json.sequence}</td>,
@@ -214,10 +258,19 @@ export class MyComponent {
           <span class="tooltiptext">Use Regex</span>
         </div>,
 
-      <table id="resultTab">
-        <th data-col="0" onClick={this.sortTable}> Sequences </th> <th data-col="1" onClick={this.sortTable}> Organism </th><th data-col="2" onClick={this.sortTable}> Occurences </th>
-        {rows.map((d) => <tr> {d} </tr>)}
-      </table>
+        <div id="box">
+
+          <table id="resultTab">
+            <th data-col="0" onClick={this.sortTable}> Sequences </th> <th data-col="1" onClick={this.sortTable}> Organism </th><th data-col="2" onClick={this.sortTable}> Occurences </th>
+            {rows.map((d) => <tr> {d} </tr>)}
+          </table>
+
+          <div id="coordBox">
+            blablabla
+          </div>
+
+        </div>,
+        <img src="./assets/design-header.jpg" alt="Test image"/>
 
     ]);
   }
