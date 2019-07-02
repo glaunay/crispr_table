@@ -13,13 +13,10 @@ import '@stencil/core';
 export namespace Components {
 
   interface MyComponent {
-    'file_name': string;
-    'str_json': string;
+    'complete_data': string;
   }
   interface MyComponentAttributes extends StencilHTMLAttributes {
-    'file_name'?: string;
-    'onJenesaispas'?: (event: CustomEvent) => void;
-    'str_json'?: string;
+    'complete_data'?: string;
   }
 }
 

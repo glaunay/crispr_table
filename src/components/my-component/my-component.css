@@ -1,4 +1,4 @@
-my-component #regexString {
+#regexString {
   width: 50%;
   font-size: 16px;
   padding: 12px 20px 12px 40px;
@@ -8,7 +8,7 @@ my-component #regexString {
 
 
 /* For bubble message */
-my-component .tooltip .tooltiptext {
+.tooltip .tooltiptext {
   visibility: hidden;
   width: 120px;
   background-color: black;
@@ -22,11 +22,11 @@ my-component .tooltip .tooltiptext {
   z-index: 1;
 }
 
-my-component .tooltip:hover .tooltiptext {
+.tooltip:hover .tooltiptext {
   visibility: visible;
 }
 
-my-component .tooltip .tooltiptext::after {
+.tooltip .tooltiptext::after {
   content: " ";
   position: absolute;
   top: 50%;
@@ -37,6 +37,12 @@ my-component .tooltip .tooltiptext::after {
   border-color: transparent black transparent transparent;
 }
 
+
+/*  The loader Spinner */
+.spinner-grow {
+  width: 150px !important;
+  height: 150px !important;
+}
 
 /*  Zebra table*/
 my-component tr:nth-child(even) {

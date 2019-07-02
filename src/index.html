@@ -5,149 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
   <title>Stencil Component Starter</title>
   <script src="/build/mycomponent.js"></script>
+  <script src="http://localhost:8080/socket.io/socket.io.js"></script>
 
 </head>
 <body>
 
-  <my-component str_json='[{
-      "sequence": "CGTCATGTTTAACCTGAAATTGG",
-      "occurences": [
-          {
-              "org": "Vibrio anguillarum 775 GCF_000217675.1",
-              "all_ref": [
-                  {
-                      "ref": "NC_015633.1",
-                      "coords": [
-                          "+(773625,773647)"
-                      ]
-                  },
-                  {
-                      "ref": "NZ_CP016177.1",
-                      "coords": [
-                          "-(2357740,2357762)"
-                      ]
-                  }
-              ]
-          },
-          {
-              "org": "Vibrio breoganii GCF_001677275.1",
-              "all_ref": [
-                  {
-                      "ref": "NZ_CP016177.1",
-                      "coords": [
-                          "-(2357740,2357762)"
-                      ]
-                  },
-                  {
-                      "ref": "NZ_CP016177.1",
-                      "coords": [
-                          "-(2357740,2357762)"
-                      ]
-                  },
-                  {
-                      "ref": "NZ_CP016177.1",
-                      "coords": [
-                          "-(2357740,2357762)"
-                      ]
-                  },
-                  {
-                      "ref": "NZ_CP016177.1",
-                      "coords": [
-                          "-(2357740,2357762)"
-                      ]
-                  }
-              ]
-          },
-          {
-              "org": "Vibrio nigripulchritudo GCF_000801275.2",
-              "all_ref": [
-                  {
-                      "ref": "NC_022528.1",
-                      "coords": [
-                          "+(121409,121431)"
-                      ]
-                  }
-              ]
-          }
-      ]
-  },
-  {
-      "sequence": "CGAGAAAAAGCGCATCCGTAAGG",
-      "occurences": [
-          {
-              "org": "Vibrio anguillarum 775 GCF_000217675.1",
-              "all_ref": [
-                  {
-                      "ref": "NC_015633.1",
-                      "coords": [
-                          "+(3051667,3051689)"
-                      ]
-                  }
-              ]
-          },
-          {
-              "org": "Vibrio nigripulchritudo GCF_000801275.2",
-              "all_ref": [
-                  {
-                      "ref": "NC_022528.1",
-                      "coords": [
-                          "+(3504243,3504265)"
-                      ]
-                  }
-              ]
-          }
-      ]
-  },
-  {
-      "sequence": "ACACTCAGATGCGAAAGCGTGGG",
-      "occurences": [
-          {
-              "org": "Vibrio anguillarum 775 GCF_000217675.1",
-              "all_ref": [
-                  {
-                      "ref": "NC_015633.1",
-                      "coords": [
-                          "+(773625,773647)"
-                      ]
-                  }
-              ]
-          },
-          {
-              "org": "Vibrio breoganii GCF_001677275.1",
-              "all_ref": [
-                  {
-                      "ref": "NZ_CP016177.1",
-                      "coords": [
-                          "-(2357740,2357762)"
-                      ]
-                  }
-              ]
-          },
-          {
-              "org": "Vibrio breoganii GCF_001677275.1",
-              "all_ref": [
-                  {
-                      "ref": "NZ_CP016177.1",
-                      "coords": [
-                          "-(2357740,2357762)"
-                      ]
-                  }
-              ]
-          },
-          {
-              "org": "Vibrio nigripulchritudo GCF_000801275.2",
-              "all_ref": [
-                  {
-                      "ref": "NC_022528.1",
-                      "coords": [
-                          "+(121409,121431)"
-                      ]
-                  }
-              ]
-          }
-      ]
-  }]'
- file_name='./src/assets'></my-component>
+  <my-component></my-component>
 
 </body>
+
+<script type="text/javascript" charset="utf-8">
+  console.log("Je suis dans Index.html");
+  var socket = io.connect('http://127.0.0.1:8080');
+
+  console.log(socket);//3002
+  socket.on('connect', function() {
+    console.log('connected');
+    socket.emit('clientConnection', {data: 'I\'m connected!'});
+  });
+  socket.emit('fileTable');
+
+  socket.on('loadFileTable', (results) => {
+    console.log("Fichier table chargé et reçu");
+    document.getElementsByTagName('my-component')[0].setAttribute('complete_data', results);
+  })
+</script>
 </html>
