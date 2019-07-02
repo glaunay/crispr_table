@@ -10,7 +10,7 @@
 </head>
 <body>
 
-  <my-component></my-component>
+  <table-crispr></table-crispr>
 
 </body>
 
@@ -27,7 +27,7 @@
 
   socket.on('loadFileTable', (results) => {
     console.log("Fichier table chargé et reçu");
-    document.getElementsByTagName('my-component')[0].setAttribute('complete_data', results);
+    document.getElementsByTagName('table-crispr')[0].setAttribute('complete_data', results);
   })
 </script>
 </html>

@@ -3,7 +3,7 @@ import { Component, Prop, State, Element} from '@stencil/core';
 
 
 @Component({
-  tag: 'my-component',
+  tag: 'table-crispr',
   styleUrl: 'my-component.css',
   shadow: true
 })
