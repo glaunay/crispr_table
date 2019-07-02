@@ -117,6 +117,7 @@ calculTotalOcc() {
 
     if (displayTableResult == 'block') {
       this.displaySgrna = this.currentData.slice((this.page - 1) * 5, this.page * 5);
+      // Color arrows for pagination
       let colorBg = (this.page == 1) ? "#f1f1f1" :  "#4cafa2";
       let colorArrow = (this.page == 1) ? "black" :  "white";
       (this.element.shadowRoot.querySelector(".previous") as HTMLElement).style.background =  colorBg;
