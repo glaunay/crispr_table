@@ -6,7 +6,13 @@
   margin-bottom: 30px;
 }
 
-
+#minOcc {
+  width: 10%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 30px;
+}
 /* For bubble message */
 .tooltip .tooltiptext {
   visibility: hidden;
@@ -37,7 +43,25 @@
   border-color: transparent black transparent transparent;
 }
 
+.previous {
+  background-color: #f1f1f1;
+  color: black;
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+}
 
+.next {
+  background-color: #4cafa2;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+}
+
+.round {
+  border-radius: 50%;
+}
 /*  The loader Spinner */
 .spinner-grow {
   width: 150px !important;

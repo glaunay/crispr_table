@@ -11,62 +11,155 @@ import { Component, Prop, State, Element} from '@stencil/core';
 export class MyComponent {
 // *************************** PROPERTY & CONSTRUCTOR ***************************
 @Element() private element: HTMLElement;
-
+// Data given by the results file
 @Prop() complete_data: string;
 
+// Complete data parsed
+@State() complete_json: [];
+// List of all sgRNA
 @State() allSgrna = [];
+// sgRNA displayed on interface
 @State() displaySgrna = [];
-//
+// Dictionary of min and max occurences for each sgRNA
+// Display occurences with this.displaySgrna as key
+@State() allOcc = new Map();
+@State() page = 1;
+// Current data displayed, filtered by regex and minOccurences
+@State() currentData = [];
+
 constructor() {
   this.regexSearch = this.regexSearch.bind(this);
+  this.calculTotalOcc = this.calculTotalOcc.bind(this);
+  this.minOccSearch = this.minOccSearch.bind(this);
+  this.regexOccSearch = this.regexOccSearch.bind(this);
 }
 // *************************** LISTEN & EMIT ***************************
 
 
 
 // *************************** CLICK ***************************
+/**
+  * Filter data by regex and occurence
+*/
+regexOccSearch() {
+  this.regexSearch();
+  this.minOccSearch();
+}
+
+
+/**
+  * Filter data by regex and reinitialize page to 1
+*/
 regexSearch() {
   let search = (this.element.shadowRoot.querySelector("#regexString")  as HTMLInputElement).value;
-  this.displaySgrna = this.allSgrna.filter(a => RegExp(search).test(a)).slice(0, 5);
+  this.page = 1;
+  console.log("RECHERCHE : " + search);
+  this.currentData = this.allSgrna.filter(a => RegExp(search).test(a));
+}
+
+
+/**
+  * Filter data by occurences.Check if maxOcc is superior to occurence given by user
+  and check if sgRNA is in current data which were filtered by regex
+*/
+minOccSearch() {
+  let minOcc = (this.element.shadowRoot.querySelector("#minOcc")  as HTMLInputElement).value;
+  console.log("MIN OCC : " + minOcc);
+  let tmp = [];
+  for (var [key, value] of this.allOcc) {
+    // Check if maxOcc is > to occurences given by user and check if sgRNA is in current data
+    // which were filtered by regex
+    if (value[1] >= minOcc && this.currentData.includes(key)) tmp.push(key);
+  }
+  this.currentData = tmp;
 }
 
 // *************************** DISPLAY ***************************
+/**
+  * Find min and max occurences for each sgRNA summing occurences for each organism
+*/
+calculTotalOcc() {
+  this.complete_json.forEach(sgrna => {
+    let maxOcc = 0, minOcc = 10000;
+    (sgrna['occurences'] as Array<string>).forEach(org => {
+      let sumOcc = 0;
+      // For each references, sum occurences. It will be total occurences for an organism
+      org['all_ref'].forEach(ref => {
+        sumOcc += ref['coords'].length;
+      })
+      // Compare if total occ is the min or the max for this sgRNA
+      if (sumOcc > maxOcc) maxOcc = sumOcc;
+      if (sumOcc < minOcc) minOcc = sumOcc;
+    })
+    this.allOcc.set(sgrna['sequence'], [minOcc, maxOcc]);
+  })
+}
+
   render() {
     console.log("rendr called")
 
-    let styleDisplay: string[], complete_data;
+    let styleDisplay: string[];
+    // Display a spinner if no data
     if (this.complete_data == undefined) {
       styleDisplay = ['block', 'none'];
     } else {
+    // Parse data and initialize allSgrna and calcul occurences
       styleDisplay = ['none', 'block'];
-      complete_data = JSON.parse(this.complete_data);
+      this.complete_json = JSON.parse(this.complete_data);
       if (this.allSgrna.length == 0) {
-        complete_data.forEach(el => this.allSgrna.push(el.sequence))
-        this.displaySgrna = this.allSgrna.slice(0, 5)
+        this.complete_json.forEach(el => this.allSgrna.push(el['sequence']));
+        this.calculTotalOcc();
+        this.currentData = this.allSgrna;
       }
     }
     let displayLoad=styleDisplay[0], displayTableResult=styleDisplay[1];
+    let maxPages = (Number.isInteger(this.currentData.length/5)) ? (this.currentData.length/5) :  (Math.trunc(this.currentData.length/5) + 1);
 
+    if (displayTableResult == 'block') {
+      this.displaySgrna = this.currentData.slice((this.page - 1) * 5, this.page * 5);
+      let colorBg = (this.page == 1) ? "#f1f1f1" :  "#4cafa2";
+      let colorArrow = (this.page == 1) ? "black" :  "white";
+      (this.element.shadowRoot.querySelector(".previous") as HTMLElement).style.background =  colorBg;
+      (this.element.shadowRoot.querySelector(".previous") as HTMLElement).style.color =  colorArrow;
+      colorBg = (this.page == maxPages) ? "#f1f1f1" :  "#4cafa2";
+      colorArrow = (this.page == maxPages) ? "black" :  "white";
+      (this.element.shadowRoot.querySelector(".next") as HTMLElement).style.background =  colorBg;
+      (this.element.shadowRoot.querySelector(".next") as HTMLElement).style.color =  colorArrow;
+    }
 
     return ([
+      // ***********************************************
+      // ******************* SPINNER *******************
+      // ***********************************************
       <div style={{display: displayLoad}}>
         <strong> Loading ... </strong>
         <div class="spinner-grow text-info" role="status"></div>
       </div>,
-
+      // *********************************************
+      // ******************* TABLE *******************
+      // *********************************************
       <div class="main-table" style={{display: displayTableResult}}>
-        <div class="tooltip">
+        {/******************** Search Bar ********************/}
+        <div>
+          <span class="tooltip">
+            // @ts-ignore
+            <input type="text" id="regexString" onkeyup={this.regexOccSearch} placeholder="Search for sgRNA.."/>
+            <span class="tooltiptext">Use Regex</span>
+          </span>
           // @ts-ignore
-          <input type="text" id="regexString" onkeyup={this.regexSearch} placeholder="Search for sgRNA.."/>
-          <span class="tooltiptext">Use Regex</span>
+          <input type="text" id="minOcc" onkeyup={this.regexOccSearch} placeholder="Min occ..."/>
         </div>
-
+        {/******************** Table ********************/}
         <table id="resultTab">
-          {this.displaySgrna.map(seq => <tr> {seq} </tr>)}
+          {this.displaySgrna.map(seq => <tr> {seq} {this.allOcc.get(seq)[0]} {this.allOcc.get(seq)[1]}</tr>)}
 
         </table>
+        {/******************** Pagination ********************/}
+        <div class="pagination">
+          <a href="#" class="previous round" onClick={() => {if (this.page > 1) this.page -= 1}}>&#8249;</a>
+          <a href="#" class="next round" onClick={() => {if (this.page < maxPages) this.page += 1}}>&#8250;</a>
+        </div>
       </div>,
-
 
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>,
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>,

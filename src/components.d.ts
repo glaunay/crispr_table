@@ -12,36 +12,36 @@ import '@stencil/core';
 
 export namespace Components {
 
-  interface MyComponent {
+  interface TableCrispr {
     'complete_data': string;
   }
-  interface MyComponentAttributes extends StencilHTMLAttributes {
+  interface TableCrisprAttributes extends StencilHTMLAttributes {
     'complete_data'?: string;
   }
 }
 
 declare global {
   interface StencilElementInterfaces {
-    'MyComponent': Components.MyComponent;
+    'TableCrispr': Components.TableCrispr;
   }
 
   interface StencilIntrinsicElements {
-    'my-component': Components.MyComponentAttributes;
+    'table-crispr': Components.TableCrisprAttributes;
   }
 
 
-  interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {}
-  var HTMLMyComponentElement: {
-    prototype: HTMLMyComponentElement;
-    new (): HTMLMyComponentElement;
+  interface HTMLTableCrisprElement extends Components.TableCrispr, HTMLStencilElement {}
+  var HTMLTableCrisprElement: {
+    prototype: HTMLTableCrisprElement;
+    new (): HTMLTableCrisprElement;
   };
 
   interface HTMLElementTagNameMap {
-    'my-component': HTMLMyComponentElement
+    'table-crispr': HTMLTableCrisprElement
   }
 
   interface ElementTagNameMap {
-    'my-component': HTMLMyComponentElement;
+    'table-crispr': HTMLTableCrisprElement;
   }
 
 
