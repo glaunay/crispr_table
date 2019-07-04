@@ -7,7 +7,7 @@
 
 import '@stencil/core';
 
-
+import 'radial-rep';
 
 
 export namespace Components {
