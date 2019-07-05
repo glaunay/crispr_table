@@ -96,6 +96,16 @@ calculTotalOcc() {
   })
 }
 
+fName(seq: string) {
+  for (var dic in this.complete_json){
+    if (this.complete_json[dic]["sequence"] == seq){
+      console.log("TROUVE")
+      console.log(dic)
+      return JSON.stringify(this.complete_json[dic])
+    }
+  }
+}
+
   render() {
     console.log("rendr called")
 
@@ -128,7 +138,6 @@ calculTotalOcc() {
       (this.element.shadowRoot.querySelector(".next") as HTMLElement).style.background =  colorBg;
       (this.element.shadowRoot.querySelector(".next") as HTMLElement).style.color =  colorArrow;
     }
-
     return ([
       // ***********************************************
       // ******************* SPINNER *******************
@@ -153,7 +162,12 @@ calculTotalOcc() {
         </div>
         {/******************** Table ********************/}
         <table id="resultTab">
-          {this.displaySgrna.map(seq => <tr> {seq} {this.allOcc.get(seq)[0]} {this.allOcc.get(seq)[1]} <radial-crispr dic_sgrna={seq} max_occ={this.allOcc.get(seq)[1]} > </radial-crispr></tr>)}
+          {this.displaySgrna.map(seq => <tr>
+            <td> <b>{seq}</b>
+              <br/> Min : {this.allOcc.get(seq)[0]}
+              <br/> Max : {this.allOcc.get(seq)[1]} </td>
+            <td> <radial-crispr dic_sgrna={this.fName(seq)} max_occ={this.allOcc.get(seq)[1]} diagonal={200}> </radial-crispr> </td>
+            </tr>)}
         </table>
 
         {/******************** Pagination ********************/}
