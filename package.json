@@ -20,7 +20,7 @@
     "bootstrap": "^4.3.1",
     "frappe-datatable": "^1.13.0",
     "fs": "0.0.1-security",
-    "radial-rep": "0.0.2"
+    "radial-rep": "0.0.3"
   },
   "devDependencies": {
     "@stencil/core": "~0.16.2",
