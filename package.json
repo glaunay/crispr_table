@@ -20,8 +20,7 @@
     "@mmsb/selectionnable-tree": "0.0.21",
     "bootstrap": "^4.3.1",
     "frappe-datatable": "^1.13.5",
-    "fs": "0.0.1-security",
-    "radial-rep": "0.0.3"
+    "fs": "0.0.1-security"
   },
   "devDependencies": {
     "@stencil/core": "^1.1.4",
