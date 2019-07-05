@@ -153,12 +153,10 @@ fName(seq: string) {
         {/******************** Search Bar ********************/}
         <div>
           <span class="tooltip">
-            // @ts-ignore
-            <input type="text" id="regexString" onkeyup={this.regexOccSearch} placeholder="Search for sgRNA.."/>
+            <input type="text" id="regexString" onKeyUp={this.regexOccSearch} placeholder="Search for sgRNA.."/>
             <span class="tooltiptext">Use Regex</span>
           </span>
-          // @ts-ignore
-          <input type="text" id="minOcc" onkeyup={this.regexOccSearch} placeholder="Min occ..."/>
+          <input type="text" id="minOcc" onKeyUp={this.regexOccSearch} placeholder="Min occ..."/>
         </div>
         {/******************** Table ********************/}
         <table id="resultTab">
