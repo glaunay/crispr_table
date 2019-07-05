@@ -5,28 +5,20 @@
  */
 
 
-import '@stencil/core';
-
-import 'radial-rep';
+import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
-
   interface TableCrispr {
     'complete_data': string;
-  }
-  interface TableCrisprAttributes extends StencilHTMLAttributes {
-    'complete_data'?: string;
   }
 }
 
 declare global {
-  interface StencilElementInterfaces {
-    'TableCrispr': Components.TableCrispr;
-  }
 
-  interface StencilIntrinsicElements {
-    'table-crispr': Components.TableCrisprAttributes;
+  // Adding a global JSX for backcompatibility with legacy dependencies
+  export namespace JSX {
+    export interface Element {}
   }
 
 
@@ -35,22 +27,28 @@ declare global {
     prototype: HTMLTableCrisprElement;
     new (): HTMLTableCrisprElement;
   };
-
   interface HTMLElementTagNameMap {
-    'table-crispr': HTMLTableCrisprElement
-  }
-
-  interface ElementTagNameMap {
     'table-crispr': HTMLTableCrisprElement;
   }
-
-
-  export namespace JSX {
-    export interface Element {}
-    export interface IntrinsicElements extends StencilIntrinsicElements {
-      [tagName: string]: any;
-    }
-  }
-  export interface HTMLAttributes extends StencilHTMLAttributes {}
-
 }
+
+declare namespace LocalJSX {
+  interface TableCrispr extends JSXBase.HTMLAttributes<HTMLTableCrisprElement> {
+    'complete_data'?: string;
+  }
+
+  interface IntrinsicElements {
+    'table-crispr': TableCrispr;
+  }
+}
+
+export { LocalJSX as JSX };
+
+
+declare module "@stencil/core" {
+  export namespace JSX {
+    interface IntrinsicElements extends LocalJSX.IntrinsicElements {}
+  }
+}
+
+
