@@ -1,5 +1,5 @@
 import { Component, Prop, State, Element, h } from '@stencil/core';
-import "radial-rep";
+import "@mmsb/radial-crispr";
 
 @Component({
   tag: 'table-crispr',
