@@ -97,8 +97,6 @@ calculTotalOcc() {
 fName(seq: string) {
   for (var dic in this.complete_json){
     if (this.complete_json[dic]["sequence"] == seq){
-      console.log("TROUVE")
-      console.log(dic)
       return JSON.stringify(this.complete_json[dic])
     }
   }
