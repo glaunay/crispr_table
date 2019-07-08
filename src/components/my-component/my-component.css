@@ -64,10 +64,6 @@
   border-radius: 50%;
 }
 
-#resultTab>td>b {
-  color: rgb(74, 177, 230);
-  font-size: 1.2em
-}
 /*  The loader Spinner */
 .spinner-grow {
   width: 150px !important;

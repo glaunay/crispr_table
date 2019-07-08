@@ -94,6 +94,20 @@ calculTotalOcc() {
   })
 }
 
+colorPagination(maxPages) {
+  console.log(this.element.shadowRoot);
+  // Color arrows for pagination
+  let colorBg = (this.page == 1) ? "#f1f1f1" :  "rgb(74, 177, 230)";
+  let colorArrow = (this.page == 1) ? "black" :  "white";
+  (this.element.shadowRoot.querySelector(".previous") as HTMLElement).style.background =  colorBg;
+  (this.element.shadowRoot.querySelector(".previous") as HTMLElement).style.color =  colorArrow;
+  colorBg = (this.page == maxPages) ? "#f1f1f1" :  "rgb(74, 177, 230)";
+  colorArrow = (this.page == maxPages) ? "black" :  "white";
+  (this.element.shadowRoot.querySelector(".next") as HTMLElement).style.background =  colorBg;
+  (this.element.shadowRoot.querySelector(".next") as HTMLElement).style.color =  colorArrow;
+}
+
+
 fName(seq: string) {
   for (var dic in this.complete_json){
     if (this.complete_json[dic]["sequence"] == seq){
@@ -101,6 +115,11 @@ fName(seq: string) {
     }
   }
 }
+
+  componentDidRender() {
+    let maxPages = (Number.isInteger(this.currentData.length/5)) ? (this.currentData.length/5) :  (Math.trunc(this.currentData.length/5) + 1);
+    this.colorPagination(maxPages)
+  }
 
   render() {
     console.log("rendr called")
@@ -124,15 +143,6 @@ fName(seq: string) {
 
     if (displayTableResult == 'block') {
       this.displaySgrna = this.currentData.slice((this.page - 1) * 5, this.page * 5);
-      // Color arrows for pagination
-      let colorBg = (this.page == 1) ? "#f1f1f1" :  "rgb(74, 177, 230)";
-      let colorArrow = (this.page == 1) ? "black" :  "white";
-      (this.element.shadowRoot.querySelector(".previous") as HTMLElement).style.background =  colorBg;
-      (this.element.shadowRoot.querySelector(".previous") as HTMLElement).style.color =  colorArrow;
-      colorBg = (this.page == maxPages) ? "#f1f1f1" :  "rgb(74, 177, 230)";
-      colorArrow = (this.page == maxPages) ? "black" :  "white";
-      (this.element.shadowRoot.querySelector(".next") as HTMLElement).style.background =  colorBg;
-      (this.element.shadowRoot.querySelector(".next") as HTMLElement).style.color =  colorArrow;
     }
     return ([
       // ***********************************************
