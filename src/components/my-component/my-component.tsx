@@ -125,11 +125,11 @@ fName(seq: string) {
     if (displayTableResult == 'block') {
       this.displaySgrna = this.currentData.slice((this.page - 1) * 5, this.page * 5);
       // Color arrows for pagination
-      let colorBg = (this.page == 1) ? "#f1f1f1" :  "#4cafa2";
+      let colorBg = (this.page == 1) ? "#f1f1f1" :  "rgb(74, 177, 230)";
       let colorArrow = (this.page == 1) ? "black" :  "white";
       (this.element.shadowRoot.querySelector(".previous") as HTMLElement).style.background =  colorBg;
       (this.element.shadowRoot.querySelector(".previous") as HTMLElement).style.color =  colorArrow;
-      colorBg = (this.page == maxPages) ? "#f1f1f1" :  "#4cafa2";
+      colorBg = (this.page == maxPages) ? "#f1f1f1" :  "rgb(74, 177, 230)";
       colorArrow = (this.page == maxPages) ? "black" :  "white";
       (this.element.shadowRoot.querySelector(".next") as HTMLElement).style.background =  colorBg;
       (this.element.shadowRoot.querySelector(".next") as HTMLElement).style.color =  colorArrow;
