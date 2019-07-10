@@ -97,11 +97,11 @@ calculTotalOcc() {
 colorPagination(maxPages) {
   console.log(this.element.shadowRoot);
   // Color arrows for pagination
-  let colorBg = (this.page == 1) ? "#f1f1f1" :  "rgb(74, 177, 230)";
+  let colorBg = (this.page == 1) ? "#f1f1f1" :  "rgba(239, 71, 111)";
   let colorArrow = (this.page == 1) ? "black" :  "white";
   (this.element.shadowRoot.querySelector(".previous") as HTMLElement).style.background =  colorBg;
   (this.element.shadowRoot.querySelector(".previous") as HTMLElement).style.color =  colorArrow;
-  colorBg = (this.page == maxPages) ? "#f1f1f1" :  "rgb(74, 177, 230)";
+  colorBg = (this.page == maxPages) ? "#f1f1f1" :  "rgba(239, 71, 111)";
   colorArrow = (this.page == maxPages) ? "black" :  "white";
   (this.element.shadowRoot.querySelector(".next") as HTMLElement).style.background =  colorBg;
   (this.element.shadowRoot.querySelector(".next") as HTMLElement).style.color =  colorArrow;
@@ -160,16 +160,16 @@ fName(seq: string) {
         <div>
           <span class="tooltip">
             <input type="text" id="regexString" onKeyUp={this.regexOccSearch} placeholder="Search for sgRNA.."/>
-            <span class="tooltiptext">Use Regex</span>
+            <span class="tooltiptext">Use Regex : <br/>    ^ : beginning with <br/> $ : ending with</span>
           </span>
           <input type="text" id="minOcc" onKeyUp={this.regexOccSearch} placeholder="Min occ..."/>
         </div>
         {/******************** Table ********************/}
         <table id="resultTab">
           {this.displaySgrna.map(seq => <tr>
-            <td> <b>{seq}</b>
-              <br/> Min : {this.allOcc.get(seq)[0]}
-              <br/> Max : {this.allOcc.get(seq)[1]} </td>
+            <td> <b>{seq.slice(0, -3)}<span style={{color:"rgba(239, 71, 111)"}}>{seq.slice(-3,)} </span></b>
+              <br/> Max : {this.allOcc.get(seq)[1]}
+              <br/> Min : {this.allOcc.get(seq)[0]}</td>
             <td> <radial-crispr dic_sgrna={this.fName(seq)} max_occ={this.allOcc.get(seq)[1]} diagonal={200}> </radial-crispr> </td>
             </tr>)}
         </table>

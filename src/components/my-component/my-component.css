@@ -18,7 +18,7 @@
 .tooltip .tooltiptext {
   visibility: hidden;
   width: 120px;
-  background-color: black;
+  background-color: rgba(103, 203, 222, 0.9);
   color: #fff;
   text-align: center;
   border-radius: 6px;
@@ -41,7 +41,7 @@
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent black transparent transparent;
+  border-color: transparent rgba(103, 203, 222, 0.9) transparent transparent;
 }
 
 .previous {
@@ -53,7 +53,7 @@
 }
 
 .next {
-  background-color: rgb(74, 177, 230);
+  background-color: rgba(239, 71, 111);
   color: white;
   text-decoration: none;
   display: inline-block;
@@ -68,4 +68,8 @@
 .spinner-grow {
   width: 150px !important;
   height: 150px !important;
+}
+
+input {
+  border-radius:5px;
 }
