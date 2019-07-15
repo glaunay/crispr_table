@@ -26,12 +26,6 @@ export class MyComponent {
 // Current data displayed, filtered by regex and minOccurences
 @State() currentData = [];
 
-constructor() {
-  this.regexSearch = this.regexSearch.bind(this);
-  this.calculTotalOcc = this.calculTotalOcc.bind(this);
-  this.minOccSearch = this.minOccSearch.bind(this);
-  this.regexOccSearch = this.regexOccSearch.bind(this);
-}
 // *************************** LISTEN & EMIT ***************************
 
 
@@ -142,7 +136,7 @@ fName(seq: string) {
     let maxPages = (Number.isInteger(this.currentData.length/5)) ? (this.currentData.length/5) :  (Math.trunc(this.currentData.length/5) + 1);
 
     if (displayTableResult == 'block') {
-      this.displaySgrna = this.currentData.slice((this.page - 1) * 5, this.page * 5);
+      this.displaySgrna = this.currentData.slice((this.allSgrna.length-1) - (5 * this.page), (this.allSgrna.length-1) - (5 * (this.page - 1)));
     }
     return ([
       // ***********************************************
