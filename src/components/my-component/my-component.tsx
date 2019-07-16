@@ -51,8 +51,8 @@ regexOccSearch() {
 regexSearch() {
   let search = (this.element.shadowRoot.querySelector("#regexString")  as HTMLInputElement).value;
   this.page = 1;
-  console.log("RECHERCHE : " + search);
   this.currentData = this.allSgrna.filter(a => RegExp(search).test(a));
+  console.log(`Current Search : ${search}       Total : ${this.currentData.length}`);
 }
 
 
@@ -62,7 +62,6 @@ regexSearch() {
 */
 minOccSearch() {
   let minOcc = (this.element.shadowRoot.querySelector("#minOcc")  as HTMLInputElement).value;
-  console.log("MIN OCC : " + minOcc);
   let tmp = [];
   for (var [key, value] of this.allOcc) {
     // Check if maxOcc is > to occurences given by user and check if sgRNA is in current data
@@ -70,6 +69,8 @@ minOccSearch() {
     if (value[1] >= minOcc && this.currentData.includes(key)) tmp.push(key);
   }
   this.currentData = tmp;
+  console.log(`Min occ searched : ${minOcc}       Total : ${this.currentData.length}`);
+
 }
 
 // *************************** DISPLAY ***************************
@@ -94,7 +95,6 @@ calculTotalOcc() {
 }
 
 colorPagination(maxPages) {
-  console.log(this.element.shadowRoot);
   // Color arrows for pagination
   let colorBg = (this.page == 1) ? "#f1f1f1" :  "rgba(239, 71, 111)";
   let colorArrow = (this.page == 1) ? "black" :  "white";
@@ -121,8 +121,6 @@ fName(seq: string) {
   }
 
   render() {
-    console.log("rendr called")
-
     let styleDisplay: string[];
     // Display a spinner if no data
     if (this.complete_data == undefined) {
@@ -141,9 +139,8 @@ fName(seq: string) {
     let maxPages = (Number.isInteger(this.currentData.length/5)) ? (this.currentData.length/5) :  (Math.trunc(this.currentData.length/5) + 1);
 
     if (displayTableResult == 'block') {
-      console.log(this.page)
-      console.log(this.allSgrna.length)
-      this.displaySgrna = this.currentData.slice((this.currentData.length-1) - (5 * this.page), (this.currentData.length-1) - (5 * (this.page - 1)));
+      this.displaySgrna = this.currentData.slice((5 * (this.page - 1)), 5*this.page);
+
     }
     return ([
       // ***********************************************
