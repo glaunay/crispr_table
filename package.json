@@ -17,7 +17,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
-    "@mmsb/radial-crispr": "0.0.8",
+    "@mmsb/radial-crispr": "0.0.10",
     "bootstrap": "^4.3.1",
     "frappe-datatable": "^1.13.5",
     "fs": "0.0.1-security"
