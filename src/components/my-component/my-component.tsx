@@ -28,7 +28,12 @@ export class MyComponent {
 
 // *************************** LISTEN & EMIT ***************************
 
-
+constructor() {
+  this.regexSearch = this.regexSearch.bind(this);
+  this.calculTotalOcc = this.calculTotalOcc.bind(this);
+  this.minOccSearch = this.minOccSearch.bind(this);
+  this.regexOccSearch = this.regexOccSearch.bind(this);
+}
 
 // *************************** CLICK ***************************
 /**
@@ -136,7 +141,9 @@ fName(seq: string) {
     let maxPages = (Number.isInteger(this.currentData.length/5)) ? (this.currentData.length/5) :  (Math.trunc(this.currentData.length/5) + 1);
 
     if (displayTableResult == 'block') {
-      this.displaySgrna = this.currentData.slice((this.allSgrna.length-1) - (5 * this.page), (this.allSgrna.length-1) - (5 * (this.page - 1)));
+      console.log(this.page)
+      console.log(this.allSgrna.length)
+      this.displaySgrna = this.currentData.slice((this.currentData.length-1) - (5 * this.page), (this.currentData.length-1) - (5 * (this.page - 1)));
     }
     return ([
       // ***********************************************
