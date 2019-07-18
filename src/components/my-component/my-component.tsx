@@ -39,7 +39,7 @@ constructor() {
 /**
   * Filter data by regex and occurence
 */
-regexOccSearch() {
+regexOccSearch():void {
   this.regexSearch();
   this.minOccSearch();
 }
@@ -48,7 +48,7 @@ regexOccSearch() {
 /**
   * Filter data by regex and reinitialize page to 1
 */
-regexSearch() {
+regexSearch():void {
   let search = (this.element.shadowRoot.querySelector("#regexString")  as HTMLInputElement).value;
   this.page = 1;
   this.currentData = this.allSgrna.filter(a => RegExp(search).test(a));
@@ -60,7 +60,7 @@ regexSearch() {
   * Filter data by occurences.Check if maxOcc is superior to occurence given by user
   and check if sgRNA is in current data which were filtered by regex
 */
-minOccSearch() {
+minOccSearch():void {
   let minOcc = (this.element.shadowRoot.querySelector("#minOcc")  as HTMLInputElement).value;
   let tmp = [];
   for (var [key, value] of this.allOcc) {
@@ -77,7 +77,7 @@ minOccSearch() {
 /**
   * Find min and max occurences for each sgRNA summing occurences for each organism
 */
-calculTotalOcc() {
+calculTotalOcc():void {
   this.complete_json.forEach(sgrna => {
     let maxOcc = 0, minOcc = 10000;
     (sgrna['occurences'] as Array<string>).forEach(org => {
@@ -94,7 +94,11 @@ calculTotalOcc() {
   })
 }
 
-colorPagination(maxPages) {
+/**
+  * Find min and max occurences for each sgRNA summing occurences for each organism
+  * @param {Number} maxPages Number of maximum pages
+*/
+colorPagination(maxPages:Number):void {
   // Color arrows for pagination
   let colorBg = (this.page == 1) ? "#f1f1f1" :  "rgba(239, 71, 111)";
   let colorArrow = (this.page == 1) ? "black" :  "white";
@@ -106,8 +110,12 @@ colorPagination(maxPages) {
   (this.element.shadowRoot.querySelector(".next") as HTMLElement).style.color =  colorArrow;
 }
 
-
-fName(seq: string) {
+/**
+*
+* @param {string} seq sequence of the sgRNA
+* @returns {string} the dictionary of the sequence in JSON format
+*/
+getDicSeq(seq: string):string {
   for (var dic in this.complete_json){
     if (this.complete_json[dic]["sequence"] == seq){
       return JSON.stringify(this.complete_json[dic])
@@ -168,7 +176,7 @@ fName(seq: string) {
             <td> <b>{seq.slice(0, -3)}<span style={{color:"rgba(239, 71, 111)"}}>{seq.slice(-3,)} </span></b>
               <br/> Max : {this.allOcc.get(seq)[1]}
               <br/> Min : {this.allOcc.get(seq)[0]}</td>
-            <td> <radial-crispr dic_sgrna={this.fName(seq)} max_occ={this.allOcc.get(seq)[1]} diagonal={200}> </radial-crispr> </td>
+            <td> <radial-crispr dic_sgrna={this.getDicSeq(seq)} max_occ={this.allOcc.get(seq)[1]} diagonal={200}> </radial-crispr> </td>
             </tr>)}
         </table>
 
