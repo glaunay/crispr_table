@@ -151,10 +151,6 @@ getDicSeq(seq: string):string {
 
     }
     return ([
-      <head>
-        //@ts-ignore
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
-      </head>,
       // ***********************************************
       // ******************* SPINNER *******************
       // ***********************************************
@@ -168,9 +164,9 @@ getDicSeq(seq: string):string {
       <div class="main-table" style={{display: displayTableResult}}>
         {/******************** Search Bar ********************/}
         <div>
-          <span class="tooltip">
+          <span class="tooltipRegex">
             <input type="text" id="regexString" onKeyUp={this.regexOccSearch} placeholder="Search for sgRNA.."/>
-            <span class="tooltiptext">Use Regex : <br/>    ^ : beginning with <br/> $ : ending with</span>
+            <span class="tooltiptextRegex">Use Regex : <br/>    ^ : beginning with <br/> $ : ending with</span>
           </span>
           <input type="text" id="minOcc" onKeyUp={this.regexOccSearch} placeholder="Min occ..."/>
         </div>
@@ -189,7 +185,9 @@ getDicSeq(seq: string):string {
           <a href="#" class="previous round" onClick={() => {if (this.page > 1) this.page -= 1}}>&#8249;</a>
           <a href="#" class="next round" onClick={() => {if (this.page < maxPages) this.page += 1}}>&#8250;</a>
         </div>
-      </div>
+      </div>,
+      //@ts-ignore
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
 
       ]);
   }

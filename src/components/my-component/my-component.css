@@ -18,7 +18,7 @@
   margin-bottom: 30px;
 }
 /* For bubble message */
-.tooltip .tooltiptext {
+.tooltipRegex .tooltiptextRegex {
   visibility: hidden;
   width: 120px;
   background-color: #6da7c3b3;
@@ -32,11 +32,11 @@
   z-index: 1;
 }
 
-.tooltip:hover .tooltiptext {
+.tooltipRegex:hover .tooltiptextRegex {
   visibility: visible;
 }
 
-.tooltip .tooltiptext::after {
+.tooltipRegex .tooltiptextRegex::after {
   content: " ";
   position: absolute;
   top: 50%;
