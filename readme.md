@@ -2,7 +2,7 @@
 
 # Table of sgRNA with radial representation
 
-![example display](https://github.com/sophielem/crispr_table/blob/radial_display/docs/example.png)
+![example display](https://github.com/sophielem/crispr_table/blob/master/docs/example.png)
 
 ## Usage
 Need only one property : *complete_data*      Another component will be installed : *radial-crispr* to create the radial representation inside table.
