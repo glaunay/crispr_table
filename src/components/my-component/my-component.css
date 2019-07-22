@@ -1,3 +1,6 @@
+.main-table{
+  font-family: "Helvetica Neue", Helvetica, Arial;
+}
 #regexString {
   width: 20%;
   font-size: 16px;
@@ -18,7 +21,7 @@
 .tooltip .tooltiptext {
   visibility: hidden;
   width: 120px;
-  background-color: rgba(103, 203, 222, 0.9);
+  background-color: #6da7c3b3;
   color: #fff;
   text-align: center;
   border-radius: 6px;
